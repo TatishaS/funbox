@@ -1,0 +1,210 @@
+.card {
+  border: 4px solid $blue;
+  padding: 21px 16px 16px 50px;
+  border-radius: 12px;
+  position: relative;
+  clip-path: url(#card-content);
+  width: 320px;
+  height: 480px;
+
+  background: #f2f2f2 url(../../images/cat.png);
+  background-position: -30px 200%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  background-size: 120%;
+
+  transition: all 0.5s;
+  margin-bottom: 14px;
+
+  &:before {
+    border-right: 5px solid $blue;
+    width: 54px;
+    height: 54px;
+    content: '';
+    position: absolute;
+    transform: rotate(45deg);
+    left: -31px;
+    top: -27px;
+    background: transparent;
+  }
+
+  &__wrapper {
+    &:not(:last-child) {
+      margin-right: 80px;
+    }
+  }
+
+  &__wrapper,
+  &__wrapper .card,
+  &__wrapper .card::before,
+  &__wrapper .card__weight-circle {
+    transition: all 0.5s ease;
+  }
+
+  &__wrapper.card__wrapper--selected {
+    .card {
+      border: 4px solid $pink;
+      &:before {
+        border-right: 5px solid $pink;
+      }
+    }
+    .card__weight-circle {
+      background-color: $pink;
+    }
+  }
+
+  /*   &__wrapper:hover .card {
+    border: 4px solid $pink;
+  }
+  &__wrapper:hover .card:before {
+    border-right: 5px solid $pink;
+  }
+
+  &__wrapper:hover .card__weight-circle {
+    background-color: $pink;
+  } */
+
+  &__inner {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    cursor: pointer;
+  }
+
+  &__subtitle {
+    color: $grey-text;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  &__title {
+    color: #000000;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    margin-bottom: 15px;
+    span {
+      display: block;
+      font-size: 48px;
+      line-height: 56px;
+    }
+  }
+
+  &__portions,
+  &__offer {
+    display: block;
+    color: $grey-text;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    span {
+      font-weight: 700;
+    }
+  }
+
+  &__weight-block {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+  }
+  &__weight-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: $blue;
+    color: #fff;
+    font-weight: 400;
+  }
+
+  &__weight {
+    text-align: center;
+  }
+
+  &__weight-number {
+    display: block;
+
+    font-size: 42px;
+    line-height: 42px;
+    margin-top: 6px;
+  }
+  &__weight-units {
+    font-size: 21px;
+    line-height: 21px;
+  }
+
+  &__bottom-text {
+    color: #fff;
+    text-align: center;
+    &.card__bottom-text--disabled {
+      color: $yellow;
+    }
+  }
+  &__bottom-link {
+    color: $blue;
+    border-bottom: 1px dashed $blue;
+    cursor: pointer;
+  }
+
+  /* DISABLED CARD STYLES */
+
+  &__link.card__link--disabled {
+    pointer-events: none;
+    cursor: none;
+
+    .card {
+      border: 4px solid $grey;
+    }
+
+    .card:after {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+      background: #f2f2f2;
+      opacity: 0.5;
+    }
+    .card:before {
+      border-right: 5px solid $grey;
+    }
+
+    .card__weight-circle {
+      position: relative;
+      z-index: 3;
+      background-color: $grey;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .card {
+    &__wrapper {
+      &:nth-child(2n) {
+        margin-right: 0;
+      }
+      margin-bottom: 40px;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .card {
+    &__wrapper {
+      &:not(:last-child) {
+        margin-right: 0;
+      }
+      &:nth-child(2n) {
+        margin-right: 0;
+      }
+      margin-bottom: 40px;
+    }
+  }
+}

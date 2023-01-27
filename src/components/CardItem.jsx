@@ -1,6 +1,14 @@
 import React from 'react';
 
-const CardItem = ({ item, handleSelected, disabled, selected }) => {
+const CardItem = ({
+  item,
+  i,
+  handleSelected,
+
+  disabled,
+  selected,
+  packageRef,
+}) => {
   console.log(selected);
 
   return (
@@ -8,11 +16,12 @@ const CardItem = ({ item, handleSelected, disabled, selected }) => {
       className={
         selected ? 'card__wrapper card__wrapper--selected' : 'card__wrapper'
       }
+      ref={elem => (packageRef.current[i] = elem)}
     >
       <a
         className={disabled ? 'card__link card__link--disabled' : 'card__link'}
-        href="/"
-        onClick={() => handleSelected(item.id)}
+        id={item.id}
+        onClick={e => handleSelected(e)}
       >
         <div className="card">
           <div className="card__inner">
@@ -24,7 +33,7 @@ const CardItem = ({ item, handleSelected, disabled, selected }) => {
                     : 'card__subtitle'
                 }
               >
-                {selected ? 'Котэ не одобряет?' : item.descr}
+                {item.descr}
               </h6>
               <h2 className="card__title">
                 <span>{item.name}</span>
@@ -55,7 +64,10 @@ const CardItem = ({ item, handleSelected, disabled, selected }) => {
         {!disabled ? (
           <p className="card__bottom-text">
             Чего сидишь? Порадуй котэ,&nbsp;
-            <a className="card__bottom-link" href="#">
+            <a
+              className="card__bottom-link"
+              onClick={() => handleSelected(item.id)}
+            >
               купи.
             </a>
           </p>

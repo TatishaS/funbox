@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import CardItem from './components/CardItem';
 
 const database = [
@@ -49,14 +49,62 @@ const database = [
 
 function App() {
   const [products, setProducts] = useState(database);
+  const packageRef = useRef([]);
 
-  /*  */
+  useEffect(() => {
+    const packageItems = document.querySelectorAll('.card__wrapper');
 
-  const handleSelected = id => {
+    const handleMouseLeave = event => {
+      let elem = event.target.closest('.card__wrapper--selected');
+      if (!elem) return;
+
+      /* На элемент subtitle__item, который меняется по ховеру, навешиваем атрибут data-hover как только случится mouseleave */
+      const subtitleElem = elem.querySelector('.card__subtitle');
+      console.log('Мышь ушла');
+
+      subtitleElem.setAttribute('data-hover', 'Котэ не одобряет?');
+      subtitleElem.classList.add('.card__subtitle--selected');
+
+      /*Сразу удаляем обработчик события, чтобы оно не срабатывало при следующем ховере карточки */
+      elem.removeEventListener('mouseleave', handleMouseLeave);
+    };
+
+    /* При обновлении products навешиваем обработчик mouseleave на каждую карточку со статусом selected */
+    for (let i = 0; i < packageItems.length; i++) {
+      const el = packageItems[i];
+      const subtitleEl = el.querySelector('.card__subtitle');
+      if (el.classList.contains('card__wrapper--selected')) {
+        el.addEventListener('mouseleave', handleMouseLeave);
+      } else {
+        subtitleEl.removeAttribute('data-hover');
+      }
+    }
+    /* const packageElems = packageRef.current.slice(0, products.length);
+    console.log(packageElems);
+
+    for (let i = 0; i < packageElems.length; i++) {
+      console.log(packageElems[i]);
+      const el = packageElems[i];
+      if (el.classList.contains('card__wrapper--selected')) {
+        console.log(`El ${i} содержит`);
+        el.addEventListener('mouseleave', handleMouseLeave);
+      }
+    } */
+    /*  if (packageElem.classList.contains('card__wrapper')) {
+      packageElem.addEventListener('mouseleave', handleMouseLeave);
+    } */
+  }, [products]); // следим за обновлениями products
+
+  const handleSelected = event => {
+    /* Получаем элемент */
+    let elem = event.target.closest('.card__link');
+    if (!elem) return;
+    /* Получаем атрибут id */
+    const id = +elem.getAttribute('id');
+    /* Обновляем массив с продуктами */
     const productsCopy = [...products];
     const currentItem = productsCopy.find(item => item.id === id);
     currentItem.isSelected = !currentItem.isSelected;
-
     setProducts(productsCopy);
   };
 
@@ -67,8 +115,6 @@ function App() {
       </div>
     );
 
-  console.log(products);
-
   return (
     <div className="App">
       <main>
@@ -77,13 +123,15 @@ function App() {
             <section className="products">
               <h1 className="products__title">Ты сегодня покормил кота?</h1>
               <div className="products__list">
-                {products.map(item => (
+                {products.map((item, i) => (
                   <CardItem
                     item={item}
                     key={item.id}
                     handleSelected={handleSelected}
                     disabled={!item.available}
                     selected={item.isSelected}
+                    packageRef={packageRef}
+                    i={i}
                   />
                 ))}
               </div>

@@ -41,6 +41,14 @@
     transition: all 0.5s ease;
   }
 
+  &__subtitle {
+    position: relative;
+    color: $grey-text;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    min-height: 25.4px;
+  }
   &__wrapper.card__wrapper--selected {
     .card {
       border: 4px solid $pink;
@@ -50,6 +58,19 @@
     }
     .card__weight-circle {
       background-color: $pink;
+    }
+  }
+
+  &__wrapper.card__wrapper--selected:hover {
+    .card__subtitle--selected:before {
+      content: attr(data-hover);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      color: green;
+    }
+    .card__subtitle--selected {
+      font-size: 0;
     }
   }
 
@@ -71,13 +92,6 @@
     justify-content: space-between;
     flex-direction: column;
     cursor: pointer;
-  }
-
-  &__subtitle {
-    color: $grey-text;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 19px;
   }
 
   &__title {

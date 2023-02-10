@@ -60,6 +60,9 @@
       background-color: $pink;
     }
   }
+  .card__subtitle:before {
+    content: attr(data-un-hover);
+  }
 
   &__wrapper.card__wrapper--selected:hover {
     .card__subtitle--selected:before {

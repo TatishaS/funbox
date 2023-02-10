@@ -21,7 +21,7 @@ const CardItem = ({
       <a
         className={disabled ? 'card__link card__link--disabled' : 'card__link'}
         id={item.id}
-        onClick={e => handleSelected(e)}
+        onClick={handleSelected}
       >
         <div className="card">
           <div className="card__inner">
@@ -32,9 +32,9 @@ const CardItem = ({
                     ? 'card__subtitle card__subtitle--selected'
                     : 'card__subtitle'
                 }
-              >
-                {item.descr}
-              </h6>
+                data-hover={'Котэ одобряет?'}
+                data-un-hover={item.descr}
+              ></h6>
               <h2 className="card__title">
                 <span>{item.name}</span>
                 {item.taste}
@@ -64,10 +64,7 @@ const CardItem = ({
         {!disabled ? (
           <p className="card__bottom-text">
             Чего сидишь? Порадуй котэ,&nbsp;
-            <a
-              className="card__bottom-link"
-              onClick={() => handleSelected(item.id)}
-            >
+            <a className="card__bottom-link" onClick={handleSelected}>
               купи.
             </a>
           </p>

@@ -4,24 +4,31 @@ const CardItem = ({
   item,
   i,
   handleSelected,
+  handleVisited,
 
   disabled,
   selected,
   packageRef,
+  visited,
 }) => {
-  console.log(selected);
+  const className = [
+    'card__wrapper',
+    selected && 'card__wrapper--selected',
+    visited && 'card__wrapper--visited',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div
-      className={
-        selected ? 'card__wrapper card__wrapper--selected' : 'card__wrapper'
-      }
+      className={className}
+      onMouseLeave={handleVisited}
       ref={elem => (packageRef.current[i] = elem)}
     >
       <a
         className={disabled ? 'card__link card__link--disabled' : 'card__link'}
         id={item.id}
-        onClick={e => handleSelected(e)}
+        onClick={handleSelected}
       >
         <div className="card">
           <div className="card__inner">
@@ -32,6 +39,7 @@ const CardItem = ({
                     ? 'card__subtitle card__subtitle--selected'
                     : 'card__subtitle'
                 }
+                data-hover={'Котэ одобряет?'}
               >
                 {item.descr}
               </h6>
@@ -64,10 +72,7 @@ const CardItem = ({
         {!disabled ? (
           <p className="card__bottom-text">
             Чего сидишь? Порадуй котэ,&nbsp;
-            <a
-              className="card__bottom-link"
-              onClick={() => handleSelected(item.id)}
-            >
+            <a className="card__bottom-link" onClick={handleSelected}>
               купи.
             </a>
           </p>

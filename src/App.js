@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import CardItem from './components/CardItem';
 
 const database = [
@@ -15,6 +15,7 @@ const database = [
     productUrl: '#',
     available: true,
     isSelected: false,
+    isVisited: false,
   },
   {
     id: 2,
@@ -29,6 +30,7 @@ const database = [
     productUrl: '#',
     available: true,
     isSelected: false,
+    isVisited: false,
   },
   {
     id: 3,
@@ -44,6 +46,7 @@ const database = [
     productUrl: '#',
     available: false,
     isSelected: false,
+    isVisited: false,
   },
 ];
 
@@ -51,60 +54,20 @@ function App() {
   const [products, setProducts] = useState(database);
   const packageRef = useRef([]);
 
-  useEffect(() => {
-    const packageItems = document.querySelectorAll('.card__wrapper');
-
-    const handleMouseLeave = event => {
-      let elem = event.target.closest('.card__wrapper--selected');
-      if (!elem) return;
-
-      /* На элемент subtitle__item, который меняется по ховеру, навешиваем атрибут data-hover как только случится mouseleave */
-      const subtitleElem = elem.querySelector('.card__subtitle');
-      console.log('Мышь ушла');
-
-      subtitleElem.setAttribute('data-hover', 'Котэ не одобряет?');
-      subtitleElem.classList.add('.card__subtitle--selected');
-
-      /*Сразу удаляем обработчик события, чтобы оно не срабатывало при следующем ховере карточки */
-      elem.removeEventListener('mouseleave', handleMouseLeave);
-    };
-
-    /* При обновлении products навешиваем обработчик mouseleave на каждую карточку со статусом selected */
-    for (let i = 0; i < packageItems.length; i++) {
-      const el = packageItems[i];
-      const subtitleEl = el.querySelector('.card__subtitle');
-      if (el.classList.contains('card__wrapper--selected')) {
-        el.addEventListener('mouseleave', handleMouseLeave);
-      } else {
-        subtitleEl.removeAttribute('data-hover');
-      }
-    }
-    /* const packageElems = packageRef.current.slice(0, products.length);
-    console.log(packageElems);
-
-    for (let i = 0; i < packageElems.length; i++) {
-      console.log(packageElems[i]);
-      const el = packageElems[i];
-      if (el.classList.contains('card__wrapper--selected')) {
-        console.log(`El ${i} содержит`);
-        el.addEventListener('mouseleave', handleMouseLeave);
-      }
-    } */
-    /*  if (packageElem.classList.contains('card__wrapper')) {
-      packageElem.addEventListener('mouseleave', handleMouseLeave);
-    } */
-  }, [products]); // следим за обновлениями products
-
-  const handleSelected = event => {
-    /* Получаем элемент */
-    let elem = event.target.closest('.card__link');
-    if (!elem) return;
-    /* Получаем атрибут id */
-    const id = +elem.getAttribute('id');
-    /* Обновляем массив с продуктами */
+  const handleSelected = id => {
     const productsCopy = [...products];
-    const currentItem = productsCopy.find(item => item.id === id);
-    currentItem.isSelected = !currentItem.isSelected;
+    /* Получаем нужный продукт по id */
+    const product = productsCopy.find(product => product.id === id);
+    product.isSelected = !product.isSelected;
+    setProducts(productsCopy);
+  };
+
+  const handleVisited = id => {
+    const productsCopy = [...products];
+    /* Получаем нужный продукт по id */
+    const product = productsCopy.find(product => product.id === id);
+    product.isVisited = true;
+
     setProducts(productsCopy);
   };
 
@@ -127,11 +90,13 @@ function App() {
                   <CardItem
                     item={item}
                     key={item.id}
-                    handleSelected={handleSelected}
+                    handleSelected={() => handleSelected(item.id)}
+                    handleVisited={() => handleVisited(item.id)}
                     disabled={!item.available}
                     selected={item.isSelected}
                     packageRef={packageRef}
                     i={i}
+                    visited={item.isVisited}
                   />
                 ))}
               </div>

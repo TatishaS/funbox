@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import CardItem from './components/CardItem';
 
 const database = [
@@ -15,6 +15,7 @@ const database = [
     productUrl: '#',
     available: true,
     isSelected: false,
+    isVisited: false,
   },
   {
     id: 2,
@@ -29,6 +30,7 @@ const database = [
     productUrl: '#',
     available: true,
     isSelected: false,
+    isVisited: false,
   },
   {
     id: 3,
@@ -44,6 +46,7 @@ const database = [
     productUrl: '#',
     available: false,
     isSelected: false,
+    isVisited: false,
   },
 ];
 
@@ -56,6 +59,15 @@ function App() {
     /* Получаем нужный продукт по id */
     const product = productsCopy.find(product => product.id === id);
     product.isSelected = !product.isSelected;
+    setProducts(productsCopy);
+  };
+
+  const handleVisited = id => {
+    const productsCopy = [...products];
+    /* Получаем нужный продукт по id */
+    const product = productsCopy.find(product => product.id === id);
+    product.isVisited = true;
+
     setProducts(productsCopy);
   };
 
@@ -79,10 +91,12 @@ function App() {
                     item={item}
                     key={item.id}
                     handleSelected={() => handleSelected(item.id)}
+                    handleVisited={() => handleVisited(item.id)}
                     disabled={!item.available}
                     selected={item.isSelected}
                     packageRef={packageRef}
                     i={i}
+                    visited={item.isVisited}
                   />
                 ))}
               </div>

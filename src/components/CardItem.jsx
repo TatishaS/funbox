@@ -4,18 +4,25 @@ const CardItem = ({
   item,
   i,
   handleSelected,
+  handleVisited,
 
   disabled,
   selected,
   packageRef,
+  visited,
 }) => {
-  console.log(selected);
+  const className = [
+    'card__wrapper',
+    selected && 'card__wrapper--selected',
+    visited && 'card__wrapper--visited',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div
-      className={
-        selected ? 'card__wrapper card__wrapper--selected' : 'card__wrapper'
-      }
+      className={className}
+      onMouseLeave={handleVisited}
       ref={elem => (packageRef.current[i] = elem)}
     >
       <a
@@ -33,8 +40,9 @@ const CardItem = ({
                     : 'card__subtitle'
                 }
                 data-hover={'Котэ одобряет?'}
-                data-un-hover={item.descr}
-              ></h6>
+              >
+                {item.descr}
+              </h6>
               <h2 className="card__title">
                 <span>{item.name}</span>
                 {item.taste}
